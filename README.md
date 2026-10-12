@@ -21,4 +21,4 @@ Not implemented: desktop sharing, BeeBOX (answers "unavailable"), live voice/vid
   group chat, buzz, status and file transfer in both directions (byte-identical) worked.
 - `ScreenshotTest` renders the screens with Roborazzi (`app/build/shots`).
 
-Build: `./gradlew assembleDebug` (JDK 17, Android SDK 35). Licence: GPL v3 (see LICENSE).
+Version 0.1. Build: `./gradlew assembleDebug` (JDK 17, Android SDK 35). Licence: GPL v3 (see LICENSE).
