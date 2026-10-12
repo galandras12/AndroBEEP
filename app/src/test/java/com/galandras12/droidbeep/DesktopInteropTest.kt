@@ -9,6 +9,7 @@ import com.galandras12.droidbeep.core.EngineStorage
 import com.galandras12.droidbeep.core.LocalFile
 import com.galandras12.droidbeep.core.MemoryStorage
 import com.galandras12.droidbeep.core.UserStatus
+import kotlinx.coroutines.flow.first
 import org.junit.Assume.assumeTrue
 import org.junit.Test
 import java.io.File
@@ -51,7 +52,7 @@ class DesktopInteropTest {
             th,
             EngineConfig(
                 nickname = "DroidTest", accountName = "droidtest", domainName = "android", localHostName = "Pixel",
-                userHash = Crypto.simpleHash("droidtest-interop"), listenerPort = 16475, fileTransferPort = 16476,
+                userHash = Crypto.simpleHash("droidtest-interop"), listenerPort = 16475, fileTransferPort = 16476, broadcastPort = 36999, useMulticast = false,
             )
         )
         th.engine = engine
@@ -69,9 +70,19 @@ class DesktopInteropTest {
         val f = File(root, "sample.txt").also { it.writeText("file from kotlin\n".repeat(5000)) }
         Thread.sleep(500)
         engine.transfers.sendFiles(engine.openPrivateChat(peer.key), listOf(LocalFile(f.absolutePath, f.name, f.length(), f.lastModified(), "text/plain")))
+        Thread.sleep(1500)
+        engine.setStatus(UserStatus.Busy, "busy from Kotlin")
+        engine.setVCard(com.galandras12.droidbeep.core.VCard(firstName = "Droid", lastName = "Tester", email = "droid@example.org", phone = "+36 1 234", info = "Kotlin client"))
+        engine.sendBuzz(peer.key)
+        val gid = engine.createGroup("Kotlin Group", setOf(peer.key))
+        println("GROUP $gid")
+        Thread.sleep(1500)
+        if (gid != null) engine.sendMessage(gid, "Hello group members")
+        engine.sendTyping(BeeEngine.DEFAULT_CHAT_ID)
         val end = System.currentTimeMillis() + seconds * 1000L
         while (System.currentTimeMillis() < end) Thread.sleep(500)
-        println("MESSAGES default: " + engine.chat(BeeEngine.DEFAULT_CHAT_ID))
+        println("CHATS " + engine.chats.value.map { "${it.id}:${it.name}:${it.members}:unread=${it.unread}" })
+        engine.chats.value.forEach { c -> println("MSGS ${c.id}: " + kotlinx.coroutines.runBlocking { engine.messages(c.id).first() }.map { "[${it.kind}/${it.delivery}] ${it.senderKey}: ${it.text}" }) }
         engine.stop()
     }
 }

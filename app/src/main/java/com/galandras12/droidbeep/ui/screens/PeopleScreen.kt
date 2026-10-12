@@ -110,8 +110,11 @@ fun PeopleScreen(engine: BeeEngine, onOpenChat: (String) -> Unit, onOpenProfile:
         }
     }
 
+    val app = androidx.compose.ui.platform.LocalContext.current.applicationContext as com.galandras12.droidbeep.BeeApp
     if (showAdd) AddAddressDialog(onDismiss = { showAdd = false }, onAdd = { host, port ->
         engine.connectToAddress(host, port)
+        val entry = if (port == Proto.DEFAULT_LISTENER_PORT) host else "$host:$port"
+        app.prefs.update { if (it.manualAddresses.contains(entry)) it else it.copy(manualAddresses = it.manualAddresses + entry) }
         showAdd = false
     })
 }

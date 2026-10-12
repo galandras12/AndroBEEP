@@ -986,6 +986,7 @@ class BeeEngine(internal val host: EngineHost, initialConfig: EngineConfig) {
             addMessageLocked(chat.id, msg, countUnread = true)
         }
         if (p.protocolVersion >= Proto.RECEIVED_MESSAGE && s.link.protoVersion >= Proto.RECEIVED_MESSAGE) s.link.send(Msgs.received(m))
+        if (openChatId == chat.id && s.link.protoVersion > 62) s.link.send(Msgs.chatRead(chat)) // the chat is on screen: already read
         val updated = chat(chat.id) ?: chat
         host.emit(EngineEvent.NewMessage(updated, stored, p))
     }
