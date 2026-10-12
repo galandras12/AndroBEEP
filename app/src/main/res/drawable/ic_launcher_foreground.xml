@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- honeycomb cell -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M54,22 L80,37 L80,67 L54,82 L28,67 L28,37 Z" />
+    <path
+        android:fillColor="#1B1B1F"
+        android:pathData="M45,38 L45,70 L57,70 C65,70 69,66 69,60 C69,56 67,53 63,52 C66,51 68,48 68,45 C68,40 64,38 58,38 Z M52,44 L57,44 C59,44 61,45 61,47 C61,49 59,50 57,50 L52,50 Z M52,56 L58,56 C61,56 62,58 62,60 C62,62 60,64 58,64 L52,64 Z" />
+    <!-- wings -->
+    <path
+        android:fillColor="#B3E5FC"
+        android:pathData="M28,40 C16,28 22,18 32,22 C38,25 40,32 38,38 Z" />
+    <path
+        android:fillColor="#B3E5FC"
+        android:pathData="M80,40 C92,28 86,18 76,22 C70,25 68,32 70,38 Z" />
+</vector>
